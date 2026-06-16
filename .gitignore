@@ -4,6 +4,9 @@
 # Rider files
 .idea/
 
+# Settings
+Dither.AppHost/appsettings.Development.json
+
 # User-specific files
 *.rsuser
 *.suo
