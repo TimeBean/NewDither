@@ -1,11 +1,11 @@
 using Service.Dither.Core.Exception;
+using Service.Dither.Core.Quantizer;
 
-namespace Service.Dither.Core.Quantizer;
+namespace Service.Dither.Infrastructure.Quantizer;
 
 /// <summary>
 /// Represents a linear quantizer for processing pixels.
 /// </summary>
-[Obsolete("Use OptimizedLinearQuantizer instead", true)]
 public class LinearQuantizer : IQuantizer
 {
     /// <summary>

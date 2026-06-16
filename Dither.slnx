@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/Services/" />
   <Folder Name="/Services/Service.Dither/">
+    <Project Path="Service.Dither.Application/Service.Dither.Application.csproj" />
     <Project Path="Service.Dither.Core/Service.Dither.Core.csproj" />
-    <!--<Project Path="Service.Dither.Presentation.Cli/Service.Dither.Presentation.Cli.csproj" />-->
+    <Project Path="Service.Dither.Presentation.Cli/Service.Dither.Presentation.Cli.csproj" />
+    <Project Path="Service.Dither.Infrastructure/Service.Dither.Infrastructure.csproj" />
   </Folder>
   <Project Path="Dither.AppHost/Dither.AppHost.csproj" />
 </Solution>
