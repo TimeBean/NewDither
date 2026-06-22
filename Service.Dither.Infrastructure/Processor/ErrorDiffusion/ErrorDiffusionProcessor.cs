@@ -1,5 +1,5 @@
-using Service.Dither.Core.Processor;
-using Service.Dither.Core.Quantizer;
+using Service.Dither.Core.Model.Processor;
+using Service.Dither.Core.Model.Quantizer;
 
 namespace Service.Dither.Infrastructure.Processor.ErrorDiffusion;
 
@@ -65,6 +65,9 @@ public abstract class ErrorDiffusionProcessor : IProcessor
             for (var x = 0; x < Width; x++)
             {
                 var baseIndex = y * RowBytes + x * BytesPerPixel;
+
+                if ((uint)(baseIndex + 2) >= (uint)pixels.Length)
+                    continue;
 
                 var newValues = new List<float>();
 

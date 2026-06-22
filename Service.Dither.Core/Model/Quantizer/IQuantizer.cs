@@ -1,4 +1,4 @@
-namespace Service.Dither.Core.Quantizer;
+namespace Service.Dither.Core.Model.Quantizer;
 
 /// <summary>
 /// Quantizes RGB color component values to a reduced set of discrete intensity levels.

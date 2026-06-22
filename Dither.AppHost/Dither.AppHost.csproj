@@ -8,4 +8,9 @@
         <UserSecretsId>c3c5948c-8682-4619-b93a-58f9d2baea4e</UserSecretsId>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Service.Dither.Presentation.WebApi\Service.Dither.Presentation.WebApi.csproj" />
+      <ProjectReference Include="..\Service.WebSite.Presentation.Mvc\Service.WebSite.Presentation.Mvc.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -5,6 +5,13 @@
     <Project Path="Service.Dither.Core/Service.Dither.Core.csproj" />
     <Project Path="Service.Dither.Presentation.Cli/Service.Dither.Presentation.Cli.csproj" />
     <Project Path="Service.Dither.Infrastructure/Service.Dither.Infrastructure.csproj" />
+    <Project Path="Service.Dither.Presentation.WebApi/Service.Dither.Presentation.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Services/Service.Quote/">
+    <Project Path="Service.Quote.Domain/Service.Quote.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Services/Service.WebSite/">
+    <Project Path="Service.WebSite.Presentation.Mvc/Service.WebSite.Presentation.Mvc.csproj" />
   </Folder>
   <Project Path="Dither.AppHost/Dither.AppHost.csproj" />
 </Solution>

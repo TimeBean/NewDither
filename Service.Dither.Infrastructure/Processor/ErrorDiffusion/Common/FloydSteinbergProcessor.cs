@@ -46,20 +46,17 @@ public sealed class FloydSteinbergProcessor : ErrorDiffusionProcessor
     private void Add(Span<byte> pixels, int nx, int ny, int channel, double error, double factor)
     {
         if (nx < 0 || nx >= Width || ny < 0 || ny >= Height)
-        {
             return;
-        }
 
-        var idx = ny * RowBytes + nx * BytesPerPixel + channel;
+        int idx = ny * RowBytes + nx * BytesPerPixel + channel;
 
-        var value = pixels[idx] + error * factor;
+        if ((uint)idx >= (uint)pixels.Length)
+            return;
 
-        value = value switch
-        {
-            < 0 => 0,
-            > 255 => 255,
-            _ => value
-        };
+        double value = pixels[idx] + error * factor;
+
+        if (value < 0) value = 0;
+        else if (value > 255) value = 255;
 
         pixels[idx] = (byte)Math.Round(value);
     }

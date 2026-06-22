@@ -1,6 +1,6 @@
-using Service.Dither.Core.Quantizer;
+using Service.Dither.Core.Model.Quantizer;
 
-namespace Service.Dither.Core.Processor;
+namespace Service.Dither.Core.Model.Processor;
 
 public interface IProcessor
 {
@@ -8,6 +8,6 @@ public interface IProcessor
     public int Height { get; }
     public int RowBytes { get; }
     public int BytesPerPixel { get; }
-
+    
     public void Process(byte[] pixels, IQuantizer quantizer);
 }

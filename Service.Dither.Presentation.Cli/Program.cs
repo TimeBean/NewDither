@@ -2,8 +2,9 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Service.Dither.Application.Dither;
-using Service.Dither.Core.Processor;
-using Service.Dither.Core.Quantizer;
+using Service.Dither.Application.Dither.Common;
+using Service.Dither.Core.Model.Processor;
+using Service.Dither.Core.Model.Quantizer;
 using Service.Dither.Infrastructure.Processor.ErrorDiffusion.Common;
 using Service.Dither.Infrastructure.Quantizer;
 using SkiaSharp;
@@ -20,7 +21,7 @@ internal class Program
         
         services.AddMediatR(cfg => 
         {
-            cfg.RegisterServicesFromAssembly(typeof(DitherCommand).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(CommonDitherCommand).Assembly);
         });
 
         var serviceProvider = services.BuildServiceProvider();
@@ -42,7 +43,7 @@ internal class Program
         byte[] pixelBytes = originalBitmap.Bytes;
     
         var processStopwatch = Stopwatch.StartNew();
-        await mediator.Send(new DitherCommand(pixelBytes, processor, quantizer));
+        await mediator.Send(new CommonDitherCommand(pixelBytes, processor, quantizer));
         processStopwatch.Stop();
         
         System.Runtime.InteropServices.Marshal.Copy(pixelBytes, 0, originalBitmap.GetPixels(), pixelBytes.Length);

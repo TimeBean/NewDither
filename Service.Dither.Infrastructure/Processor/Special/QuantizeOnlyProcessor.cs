@@ -1,5 +1,5 @@
-using Service.Dither.Core.Processor;
-using Service.Dither.Core.Quantizer;
+using Service.Dither.Core.Model.Processor;
+using Service.Dither.Core.Model.Quantizer;
 
 namespace Service.Dither.Infrastructure.Processor.Special;
 
@@ -17,6 +17,7 @@ public class QuantizeOnlyProcessor : IProcessor
     public int Height { get; }
     public int RowBytes { get; }
     public int BytesPerPixel { get; }
+    public DitherAlgorithm Algorithm { get; } = DitherAlgorithm.QuantizeOnly;
 
     public void Process(byte[] pixels, IQuantizer quantizer)
     {
