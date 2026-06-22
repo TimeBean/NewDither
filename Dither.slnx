@@ -9,6 +9,7 @@
   </Folder>
   <Folder Name="/Services/Service.Quote/">
     <Project Path="Service.Quote.Domain/Service.Quote.Domain.csproj" />
+    <Project Path="Service.Quote.Infrastructure/Service.Quote.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Services/Service.WebSite/">
     <Project Path="Service.WebSite.Presentation.Mvc/Service.WebSite.Presentation.Mvc.csproj" />
