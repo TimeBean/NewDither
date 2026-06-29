@@ -1,3 +1,4 @@
+using Dither.ServiceDefaults;
 using Service.WebSite.Domain.Service;
 using Service.Website.Infrastructure.Service;
 using Tailwind;
@@ -5,12 +6,10 @@ using Tailwind;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.Services.AddHttpClient();
-
 builder.Services.AddControllersWithViews();
 builder.UseTailwindCli();
 
-builder.Services.AddHttpClient("DitherApiClient", client =>
+builder.Services.AddHttpClient<IDitherService, HttpDitherService>("DitherApiClient", client =>
     {
         client.BaseAddress = new Uri("http+https://ditherApi");
     })

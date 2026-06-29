@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Service.WebSite.Domain.Service;
 using Service.WebSite.Presentation.Mvc.Models;
@@ -8,67 +7,71 @@ namespace Service.WebSite.Presentation.Mvc.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IHttpClientFactory _clientFactory;
+    private readonly IDitherService _ditherService;
     private readonly IQuoteService _quoteService;
 
-    public HomeController(IHttpClientFactory clientFactory, IQuoteService quoteService)
+    public HomeController(IDitherService ditherService, IQuoteService quoteService)
     {
-        _clientFactory = clientFactory;
+        _ditherService = ditherService;
         _quoteService = quoteService;
     }
     
     [HttpPost("/dither/process")]
     public async Task<IActionResult> ProcessAjax([FromForm] DitherProcessRequest request)
     {
+        var quote = await _quoteService.GetRandom();
+        if (quote == null)
+        {
+            throw new Exception("Quote not found.");
+        }
+
         if (request.File.Length == 0)
         {
-            return BadRequest(new { message = "Файл не выбран или пуст." });
+            return View("Index", new IndexModel(quote, errorMessage: "Файл не выбран или пуст."));
         }
 
         var stopwatch = Stopwatch.StartNew();
 
         try
         {
-            var client = _clientFactory.CreateClient("DitherApiClient");
+            var imageBytes = await _ditherService.ProcessAsync(
+                request.File.OpenReadStream(),
+                request.File.FileName,
+                request.File.ContentType,
+                request.DitherAlgorithm,
+                request.QuantizationAlgorithm);
 
-            var ditherAlg = Uri.EscapeDataString(request.DitherAlgorithm.ToString());
-            var quantAlg = Uri.EscapeDataString(request.QuantizationAlgorithm.ToString());
-            var requestUrl = $"/dither?ditherAlgorithm={ditherAlg}&quantizationAlgorithm={quantAlg}";
-
-            using var content = new MultipartFormDataContent();
-
-            var fileContent = new StreamContent(request.File.OpenReadStream());
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue(request.File.ContentType);
-
-            content.Add(fileContent, "file", request.File.FileName);
-
-            var response = await client.PostAsync(requestUrl, content);
-
-            if (!response.IsSuccessStatusCode)
+            if (imageBytes == null)
             {
-                return StatusCode((int)response.StatusCode, new { message = "Ошибка на удаленном сервере дизеринга." });
+                return View("Index", new IndexModel(quote,
+                    errorMessage: "Ошибка на удаленном сервере дизеринга.",
+                    fileName: request.File.FileName,
+                    selectedDitherAlgorithm: request.DitherAlgorithm,
+                    selectedQuantizationAlgorithm: request.QuantizationAlgorithm));
             }
-
-            var imageBytes = await response.Content.ReadAsByteArrayAsync();
 
             stopwatch.Stop();
 
-            return Json(new
-            {
-                imageBase64 = Convert.ToBase64String(imageBytes),
-                executionTime = stopwatch.ElapsedMilliseconds
-            });
+            return View("Index", new IndexModel(quote,
+                resultImageBase64: Convert.ToBase64String(imageBytes),
+                executionTime: stopwatch.ElapsedMilliseconds,
+                fileName: request.File.FileName,
+                selectedDitherAlgorithm: request.DitherAlgorithm,
+                selectedQuantizationAlgorithm: request.QuantizationAlgorithm));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = $"Внутренняя ошибка сервера: {ex.Message}" });
+            return View("Index", new IndexModel(quote,
+                errorMessage: $"Внутренняя ошибка сервера: {ex.Message}",
+                fileName: request.File.FileName,
+                selectedDitherAlgorithm: request.DitherAlgorithm,
+                selectedQuantizationAlgorithm: request.QuantizationAlgorithm));
         }
     }
     
     public async Task<IActionResult> Index()
     {
         var quote = await _quoteService.GetRandom();
-
         if (quote == null)
         {
             throw new Exception("Quote not found.");

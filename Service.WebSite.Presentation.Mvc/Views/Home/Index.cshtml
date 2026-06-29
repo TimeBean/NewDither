@@ -6,7 +6,7 @@
 <div class="container mx-auto p-4 max-w-5xl">
     <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 border-b border-base-300 pb-6">
         <div>
-            <h1 class="text-4xl font-black tracking-tight mb-1">Dither</h1>
+            <h1 class="text-4xl font-black tracking-tight mb-1"><a asp-action="Index" class="hover:opacity-80 transition-opacity">Dither</a></h1>
             <p class="text-base-content/70 text-sm">@Model.RandomQuote</p>
         </div>
 
@@ -15,7 +15,7 @@
                 <span class="label-text-alt font-medium">Тема интерфейса</span>
             </label>
             <select id="themeSwitcher" class="select select-bordered select-sm w-full font-medium">
-                <option value="light">☀️ Light</option>
+                @*<option value="light">☀️ Light</option>*@
                 <option value="dark">🌙 Dark</option>
                 <option value="cupcake">🧁 Cupcake</option>
                 <option value="synthwave">🎆 Synthwave</option>
@@ -39,52 +39,62 @@
                     Конфигурация
                 </h2>
 
-                <form id="ditherForm" class="flex flex-col gap-4" enctype="multipart/form-data">
+                <form asp-action="ProcessAjax" method="post" class="flex flex-col gap-4" enctype="multipart/form-data">
                     <div class="form-control w-full">
                         <label class="label" for="imageInput">
                             <span class="label-text font-semibold">Исходное изображение</span>
                         </label>
                         <input type="file" id="imageInput" name="file" accept="image/*"
                                class="file-input file-input-bordered file-input-primary w-full" required/>
+                        @if (Model.FileName != null)
+                        {
+                            <span class="text-xs text-base-content/60 mt-1">@Model.FileName</span>
+                        }
                     </div>
 
                     <div class="form-control w-full">
-                        <label class="label" for="quantizeSelect">
+                        <label class="label" for="QuantizationAlgorithm">
                             <span class="label-text font-semibold">Алгоритм квантования (Quantize)</span>
                         </label>
-                        <select id="quantizeSelect" name="quantizationAlgorithm"
-                                class="select select-bordered w-full font-medium">
-                            <option value="Linear2">Linear 2</option>
-                            <option value="Linear4">Linear 4</option>
-                            <option value="Linear8">Linear 8</option>
+                        <select name="QuantizationAlgorithm" id="QuantizationAlgorithm" class="select select-bordered w-full font-medium">
+                            @foreach (var option in Model.QuantizationOptions)
+                            {
+                                <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                            }
                         </select>
                     </div>
 
                     <div class="form-control w-full">
-                        <label class="label" for="ditherSelect">
+                        <label class="label" for="DitherAlgorithm">
                             <span class="label-text font-semibold">Алгоритм дизеринга</span>
                         </label>
-                        <select id="ditherSelect" name="ditherAlgorithm"
-                                class="select select-bordered w-full font-medium">
-                            <option value="FloydSteinberg">Floyd-Steinberg</option>
-                            <option value="Atkinson">Atkinson</option>
-                            <option value="Burkes">Burkes</option>
-                            <option value="OrderedBayer2X2">Bayer (Ordered) 2x2</option>
-                            <option value="OrderedBayer4X4">Bayer (Ordered) 4x4</option>
+                        <select name="DitherAlgorithm" id="DitherAlgorithm" class="select select-bordered w-full font-medium">
+                            @foreach (var option in Model.DitherOptions.Where(o => o.GroupName == null))
+                            {
+                                <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                            }
+                            @foreach (var group in Model.DitherOptions.Where(o => o.GroupName != null).GroupBy(o => o.GroupName))
+                            {
+                                <optgroup label="@group.Key">
+                                    @foreach (var option in group)
+                                    {
+                                        <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                                    }
+                                </optgroup>
+                            }
                         </select>
                     </div>
 
                     <div class="card-actions justify-end mt-4">
-                        <button type="submit" id="submitBtn" class="btn btn-primary btn-block text-lg">
-                            <span id="loadingSpinner" class="loading loading-spinner hidden"></span>
-                            <span>Запустить обработку</span>
+                        <button type="submit" class="btn btn-primary btn-block text-lg">
+                            Запустить обработку
                         </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="card bg-base-200 shadow-xl border border-base-300/50">
+        <div id="result-panel" class="card bg-base-200 shadow-xl border border-base-300/50">
             <div class="card-body flex flex-col justify-between">
                 <div>
                     <h2 class="card-title text-xl font-bold border-b border-base-300 pb-2 mb-4">
@@ -98,22 +108,28 @@
 
                     <div
                         class="flex items-center justify-center bg-base-100 rounded-box border-2 border-dashed border-base-300 min-h-[340px] max-h-[500px] p-4 overflow-auto relative">
-                        <div id="placeholderText" class="text-base-content/40 text-center select-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                                 stroke-current="currentColor" class="w-16 h-16 mx-auto mb-2 opacity-60">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 4.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z"/>
-                            </svg>
-                            <p class="font-medium">Ожидание файла...</p>
-                            <p class="text-xs mt-1">Сконфигурируйте фильтры слева и нажмите кнопку</p>
-                        </div>
-                        <img id="resultImage" class="hidden max-w-full max-h-[460px] object-contain shadow-md rounded"
-                             alt="Отдизеренное изображение"/>
+                        @if (Model.ResultImageBase64 != null)
+                        {
+                            <img id="resultImage" class="max-w-full max-h-[460px] object-contain shadow-md rounded cursor-pointer"
+                                 src="data:image/png;base64,@Model.ResultImageBase64" alt="Отдизеренное изображение"/>
+                        }
+                        else
+                        {
+                            <div class="text-base-content/40 text-center select-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                                     stroke-current="currentColor" class="w-16 h-16 mx-auto mb-2 opacity-60">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 4.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z"/>
+                                </svg>
+                                <p class="font-medium">Ожидание файла...</p>
+                                <p class="text-xs mt-1">Сконфигурируйте фильтры слева и нажмите кнопку</p>
+                            </div>
+                        }
                     </div>
                 </div>
 
-                <div id="statsContainer"
-                     class="hidden mt-4 flex justify-between items-center bg-base-100 p-4 rounded-box border border-base-300/40">
+                <div class="mt-4 flex justify-between items-center bg-base-100 p-4 rounded-box border border-base-300/40"
+                     style="display: @(Model.ExecutionTime.HasValue ? "flex" : "none")">
                     <span class="text-sm font-bold opacity-80">Время выполнения на сервере:</span>
                     <div
                         class="badge badge-success badge-lg gap-2 py-4 px-3 font-mono text-sm font-bold text-success-content">
@@ -122,7 +138,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                   d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <span id="executionTime">0 ms</span>
+                        <span>@(Model.ExecutionTime?.ToString() ?? "0") ms</span>
                     </div>
                 </div>
             </div>
@@ -151,7 +167,9 @@
             }
         }
 
-        function showToast(message, type = 'error') {
+        document.addEventListener('DOMContentLoaded', initializeTheme);
+
+        function showToast(message, type) {
             const container = document.getElementById('toastContainer');
             if (!container) return;
 
@@ -183,75 +201,70 @@
             }, 3500);
         }
 
-        document.getElementById('ditherForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        function wireResultImageClick() {
+            const img = document.getElementById('resultImage');
+            if (img) {
+                img.addEventListener('click', function() {
+                    const a = document.createElement('a');
+                    a.href = this.src;
+                    a.download = 'image.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+            }
+        }
 
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const form = e.target;
-            const submitBtn = document.getElementById('submitBtn');
-            const spinner = document.getElementById('loadingSpinner');
-            const resultImage = document.getElementById('resultImage');
-            const placeholderText = document.getElementById('placeholderText');
-            const statsContainer = document.getElementById('statsContainer');
-            const executionTimeSpan = document.getElementById('executionTime');
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
 
             submitBtn.disabled = true;
-            spinner.classList.remove('hidden');
-            resultImage.classList.add('hidden');
-            placeholderText.classList.remove('hidden');
-            statsContainer.classList.add('hidden');
+            submitBtn.textContent = 'Обработка...';
 
             try {
-                const formData = new FormData(form);
-
-                const response = await fetch('/dither/process', {
+                const response = await fetch(form.action, {
                     method: 'POST',
                     body: formData
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.message || `Ошибка сервера: ${response.status} ${response.statusText}`);
+                    showToast('Ошибка сервера: ' + response.status, 'error');
+                    return;
                 }
 
-                const data = await response.json();
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
 
-                if (!data.imageBase64) {
-                    throw new Error("Сервер обработал запрос, но не вернул данные изображения.");
+                const newPanel = doc.getElementById('result-panel');
+                const currentPanel = document.getElementById('result-panel');
+
+                if (newPanel && currentPanel) {
+                    currentPanel.innerHTML = newPanel.innerHTML;
                 }
 
-                resultImage.src = `data:image/png;base64,${data.imageBase64}`;
-                resultImage.classList.remove('hidden');
-                placeholderText.classList.add('hidden');
-
-                executionTimeSpan.textContent = `${data.executionTime} ms`;
-                statsContainer.classList.remove('hidden');
-
-                showToast('Изображение успешно обработано!', 'success');
-
-            } catch (error) {
-                console.error('Ошибка Dithering API:', error);
-                showToast(error.message || 'Произошла непредвиденная ошибка при обработке.', 'error');
-
-                placeholderText.classList.remove('hidden');
+                const errorMatch = html.match(/showToast\('([^']*)',\s*'error'\)/);
+                if (errorMatch) {
+                    showToast(errorMatch[1], 'error');
+                } else if (html.includes('Изображение успешно обработано')) {
+                    showToast('Изображение успешно обработано!', 'success');
+                    wireResultImageClick();
+                }
+            } catch (err) {
+                showToast('Ошибка сети: ' + err.message, 'error');
             } finally {
                 submitBtn.disabled = false;
-                spinner.classList.add('hidden');
+                submitBtn.textContent = originalText;
             }
         });
 
-        document.addEventListener('DOMContentLoaded', initializeTheme);
-    </script>
-
-    <script>
-        const img = document.getElementById('resultImage');
-
-        img.addEventListener('click', () => {
-            const a = document.createElement('a');
-            a.href = img.src;
-            a.download = 'image.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        });
+        @if (Model.ResultImageBase64 != null)
+        {
+            <text>wireResultImageClick();</text>
+        }
     </script>
 }

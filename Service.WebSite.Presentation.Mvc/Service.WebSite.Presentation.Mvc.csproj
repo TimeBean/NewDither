@@ -74,10 +74,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Tools\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Update="Styles\input.css">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -88,6 +84,10 @@
       <ProjectReference Include="..\Dither.ServiceDefaults\Dither.ServiceDefaults.csproj" />
       <ProjectReference Include="..\Service.WebSite.Domain\Service.WebSite.Domain.csproj" />
       <ProjectReference Include="..\Service.Website.Infrastructure\Service.Website.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Tools\" />
     </ItemGroup>
 
 </Project>
