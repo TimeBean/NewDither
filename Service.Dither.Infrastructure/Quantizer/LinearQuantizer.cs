@@ -37,19 +37,21 @@ public class LinearQuantizer : IQuantizer
     /// </exception>
     public float[] Quantize(float[] pixels)
     {
-        var newPixels = new List<float>();
-        foreach (var color in pixels)
+        var levelsMinusOne = Levels - 1;
+    
+        var toIndexCoefficient = levelsMinusOne / 255.0;
+        var toValueCoefficient = 255.0 / levelsMinusOne;
+
+        for (var i = 0; i < pixels.Length; i++)
         {
-            var levelsMinusOne = Levels - 1;
-            var index = (int)Math.Round(color * (levelsMinusOne / 255.0));
+            var index = (int)(pixels[i] * toIndexCoefficient + 0.5);
+        
             if (index < 0) index = 0;
-            if (index > levelsMinusOne) index = levelsMinusOne;
+            else if (index > levelsMinusOne) index = levelsMinusOne;
 
-            var value = index * (255.0 / levelsMinusOne);
-
-            newPixels.Add((float)value);
+            pixels[i] = (float)(index * toValueCoefficient);
         }
 
-        return newPixels.ToArray();
+        return pixels;
     }
 }

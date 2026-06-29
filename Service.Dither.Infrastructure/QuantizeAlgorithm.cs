@@ -1,6 +1,6 @@
 namespace Service.Dither.Infrastructure;
 
-public enum QuantizeAlhorithm
+public enum QuantizeAlgorithm
 {
     Linear
 }

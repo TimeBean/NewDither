@@ -6,36 +6,30 @@ namespace Service.Dither.Infrastructure.Processor.Ordered.Constants;
 public class Halftone
 {
     /// <summary>
-    /// A 4x4 Halftone dither matrix.
-    /// Values range from 0 to 15.
+    /// A 4x4 clustered-dot halftone matrix.
+    /// Values increase from the center outward (distance-based ordering).
     /// </summary>
-    /// <value>
-    /// Normalization formula: (M[i,j] + 1) / 16
-    /// </value>
     public static readonly int[,] Halftone4 =
     {
-        { 0, 12, 3, 15 },
-        { 8, 4, 11, 7 },
-        { 2, 14, 1, 13 },
-        { 10, 6, 9, 5 }
+        { 12, 4, 5, 13 },
+        { 6, 0, 1, 7 },
+        { 8, 2, 3, 9 },
+        { 14, 10, 11, 15 }
     };
 
     /// <summary>
-    /// A 8x8 Halftone dither matrix.
-    /// Values range from 0 to 63.
+    /// An 8x8 clustered-dot halftone matrix.
+    /// Values increase from the center outward (distance-based ordering).
     /// </summary>
-    /// <value>
-    /// Normalization formula: (M[i,j] + 1) / 64
-    /// </value>
     public static readonly int[,] Halftone8 =
     {
-        { 0, 32, 8, 40, 2, 34, 10, 42 },
-        { 48, 16, 56, 24, 50, 18, 58, 26 },
-        { 12, 44, 4, 36, 14, 46, 6, 38 },
-        { 60, 28, 52, 20, 62, 30, 54, 22 },
-        { 3, 35, 11, 43, 1, 33, 9, 41 },
-        { 51, 19, 59, 27, 49, 17, 57, 25 },
-        { 15, 47, 7, 39, 13, 45, 5, 37 },
-        { 63, 31, 55, 23, 61, 29, 53, 21 }
+        { 60, 52, 44, 32, 33, 45, 53, 61 },
+        { 54, 40, 24, 16, 17, 25, 41, 55 },
+        { 46, 26, 12, 4, 5, 13, 27, 47 },
+        { 34, 18, 6, 0, 1, 7, 19, 35 },
+        { 36, 20, 8, 2, 3, 9, 21, 37 },
+        { 48, 28, 14, 10, 11, 15, 29, 49 },
+        { 56, 42, 30, 22, 23, 31, 43, 57 },
+        { 62, 58, 50, 38, 39, 51, 59, 63 }
     };
 }

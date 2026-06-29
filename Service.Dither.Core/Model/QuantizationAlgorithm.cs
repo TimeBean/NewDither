@@ -8,4 +8,6 @@ public enum QuantizationAlgorithm
     Linear16,
     Linear32,
     Linear64,
+    
+    GrayscaleByAverage,
 }
