@@ -7,6 +7,9 @@
 # Settings
 Dither.AppHost/appsettings.Development.json
 
+# Tailwind
+Service.WebSite.Presentation.Mvc/wwwroot/css/tailwind.css
+
 # User-specific files
 *.rsuser
 *.suo
