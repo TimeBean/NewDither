@@ -53,7 +53,7 @@ public class DapperQuoteRepository : IQuoteRepository
 
         if (quote == null)
         {
-            throw new QuoteNotFoundException($"Quote with id: {id} does not exist");
+            throw new QuoteNotFoundException(id);
         }
         
         return quote;
