@@ -44,12 +44,12 @@ public class Author
     /// Returns the full name of the author as a string.
     /// </summary>
     /// <returns>
-    /// A string representing the author's full name, including the middle name if it is provided.
+    /// A string representing the author's full name, omitting any null or empty components.
     /// </returns>
     public override string ToString()
     {
-        return string.IsNullOrWhiteSpace(MiddleName)
-            ? $"{FirstName} {SecondName}"
-            : $"{FirstName} {MiddleName} {SecondName}";
+        var nameParts = new[] { FirstName, MiddleName, SecondName };
+    
+        return string.Join(" ", nameParts.Where(part => !string.IsNullOrWhiteSpace(part)));
     }
 }

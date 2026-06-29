@@ -35,7 +35,7 @@ public class DapperQuoteRepository : IQuoteRepository
                                y.is_anno_domini AS IsAnnoDomini
                            FROM Quote q
                            INNER JOIN Author a ON q.author_id = a.id
-                           INNER JOIN Year y ON q.year_value = y.id
+                           INNER JOIN Year y ON q.year_id = y.id
                            WHERE q.id = @Id;
                            """;
 
@@ -77,7 +77,7 @@ public class DapperQuoteRepository : IQuoteRepository
                                y.id AS Id, y.years_from_median AS YearFromMedian, y.is_anno_domini AS IsAnnoDomini
                            FROM Quote q
                            INNER JOIN Author a ON q.author_id = a.id
-                           INNER JOIN Year   y ON q.year_value = y.id
+                           INNER JOIN Year   y ON q.year_id = y.id
                            WHERE q.author_id = @AuthorId;
                            """;
 
