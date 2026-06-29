@@ -213,4 +213,6 @@ FakesAssemblies/
 .cr/personal
 
 # JetBrains Rider
-*.sln.iml
+*.sln.imlService.WebSite.Presentation.Mvc/Tools/tailwindcss-extra
+Service.WebSite.Presentation.Mvc/Tools/tailwindcss-extra
+Service.WebSite.Presentation.Mvc/Tools/tailwindcss-extra

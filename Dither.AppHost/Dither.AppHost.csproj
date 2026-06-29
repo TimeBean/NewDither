@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Service.Dither.Presentation.WebApi\Service.Dither.Presentation.WebApi.csproj" />
+      <ProjectReference Include="..\Service.Quote.WebApi\Service.Quote.WebApi.csproj" />
       <ProjectReference Include="..\Service.WebSite.Presentation.Mvc\Service.WebSite.Presentation.Mvc.csproj" />
     </ItemGroup>
 

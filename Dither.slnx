@@ -8,11 +8,16 @@
     <Project Path="Service.Dither.Presentation.WebApi/Service.Dither.Presentation.WebApi.csproj" />
   </Folder>
   <Folder Name="/Services/Service.Quote/">
+    <Project Path="Service.Quote.Application/Service.Quote.Application.csproj" />
     <Project Path="Service.Quote.Domain/Service.Quote.Domain.csproj" />
     <Project Path="Service.Quote.Infrastructure/Service.Quote.Infrastructure.csproj" />
+    <Project Path="Service.Quote.WebApi/Service.Quote.WebApi.csproj" />
   </Folder>
   <Folder Name="/Services/Service.WebSite/">
+    <Project Path="Service.WebSite.Domain/Service.WebSite.Domain.csproj" />
+    <Project Path="Service.Website.Infrastructure/Service.Website.Infrastructure.csproj" />
     <Project Path="Service.WebSite.Presentation.Mvc/Service.WebSite.Presentation.Mvc.csproj" />
   </Folder>
   <Project Path="Dither.AppHost/Dither.AppHost.csproj" />
+  <Project Path="Dither.ServiceDefaults/Dither.ServiceDefaults.csproj" />
 </Solution>

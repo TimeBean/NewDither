@@ -9,7 +9,10 @@ using SkiaSharp;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
-builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblyContaining<FormFileDitherCommand>(); });
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<FormFileDitherCommand>();
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {

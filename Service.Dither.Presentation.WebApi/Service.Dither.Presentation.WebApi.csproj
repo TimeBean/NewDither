@@ -17,6 +17,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Service.Dither.Application\Service.Dither.Application.csproj" />
       <ProjectReference Include="..\Service.Dither.Infrastructure\Service.Dither.Infrastructure.csproj" />
+      <ProjectReference Include="..\Service.Quote.Domain\Service.Quote.Domain.csproj" />
+      <ProjectReference Include="..\Service.Quote.Infrastructure\Service.Quote.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
