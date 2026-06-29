@@ -1,9 +1,26 @@
+using Service.WebSite.Domain.Service;
+using Service.Website.Infrastructure.Service;
 using Tailwind;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+builder.Services.AddHttpClient();
+
 builder.Services.AddControllersWithViews();
 builder.UseTailwindCli();
+
+builder.Services.AddHttpClient("DitherApiClient", client =>
+    {
+        client.BaseAddress = new Uri("http+https://ditherApi");
+    })
+    .AddServiceDiscovery();
+
+builder.Services.AddHttpClient<IQuoteService, HttpQuoteService>("QuoteApiClient", client =>
+    {
+        client.BaseAddress = new Uri("http+https://quoteApi");
+    })
+    .AddServiceDiscovery();
 
 var app = builder.Build();
 

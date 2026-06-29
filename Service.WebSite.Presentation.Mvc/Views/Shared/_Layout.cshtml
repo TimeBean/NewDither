@@ -1,23 +1,28 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>@ViewData["Title"]</title>
+
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/tailwind.css"/>
+
+    <link rel="stylesheet" href="~/css/tailwind.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     @await Html.PartialAsync("_Favicons")
 </head>
-<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
 
-<div>
-    <main role="main">
-        @RenderBody()
-    </main>
-</div>
+<body class="h-dvh bg-base-100 text-base-content overflow-hidden">
+
+<main class="flex h-full">
+    @RenderBody()
+</main>
 
 <script src="~/js/site.js" asp-append-version="true"></script>
+
 @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

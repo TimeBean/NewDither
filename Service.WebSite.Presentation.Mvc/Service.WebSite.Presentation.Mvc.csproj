@@ -84,4 +84,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Dither.ServiceDefaults\Dither.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\Service.WebSite.Domain\Service.WebSite.Domain.csproj" />
+      <ProjectReference Include="..\Service.Website.Infrastructure\Service.Website.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

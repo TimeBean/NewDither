@@ -3,3 +3,8 @@
 
 @source "../Views/**/*.cshtml";
 @source "../Pages/**/*.cshtml";
+@source "../wwwroot/js/**/*.js"; 
+
+@plugin "daisyui" {
+  themes: light --default, dark, cupcake, synthwave, cyberpunk, retro, aqua;
+}
