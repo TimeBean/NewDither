@@ -1,11 +1,10 @@
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Service.Dither.Core.Model;
 using SkiaSharp;
 
-namespace Service.Dither.Application.Dither.Request;
+namespace Service.Dither.Application.Dither.Common;
 
-public record DitherRequestCommand(
-    IFormFile File,
+public record DitherCommand(
+    byte[] ImageBytes,
     DitherAlgorithm DitherAlgorithm,
     QuantizationAlgorithm QuantizeAlgorithm) : IRequest<SKData>;
