@@ -27,7 +27,7 @@ public class HomeController : Controller
 
         if (request.File.Length == 0)
         {
-            return View("Index", new IndexModel(quote, errorMessage: "Файл не выбран или пуст."));
+            return View("Index", new IndexModel(quote, errorMessage: "File not selected or empty."));
         }
 
         var stopwatch = Stopwatch.StartNew();
@@ -44,7 +44,7 @@ public class HomeController : Controller
             if (imageBytes == null)
             {
                 return View("Index", new IndexModel(quote,
-                    errorMessage: "Ошибка на удаленном сервере дизеринга.",
+                    errorMessage: "Error on remote dithering server.",
                     fileName: request.File.FileName,
                     selectedDitherAlgorithm: request.DitherAlgorithm,
                     selectedQuantizationAlgorithm: request.QuantizationAlgorithm));
@@ -55,14 +55,14 @@ public class HomeController : Controller
             return View("Index", new IndexModel(quote,
                 resultImageBase64: Convert.ToBase64String(imageBytes),
                 executionTime: stopwatch.ElapsedMilliseconds,
-                fileName: request.File.FileName,
+                fileName: $"dithered-{request.File.FileName}",
                 selectedDitherAlgorithm: request.DitherAlgorithm,
                 selectedQuantizationAlgorithm: request.QuantizationAlgorithm));
         }
         catch (Exception ex)
         {
             return View("Index", new IndexModel(quote,
-                errorMessage: $"Внутренняя ошибка сервера: {ex.Message}",
+                errorMessage: $"Internal server error: {ex.Message}",
                 fileName: request.File.FileName,
                 selectedDitherAlgorithm: request.DitherAlgorithm,
                 selectedQuantizationAlgorithm: request.QuantizationAlgorithm));

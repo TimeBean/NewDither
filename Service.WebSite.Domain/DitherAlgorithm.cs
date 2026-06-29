@@ -4,7 +4,7 @@ namespace Service.WebSite.Domain;
 
 public enum DitherAlgorithm
 {
-    [Display(Name = "Без дизеринга (Quantize Only)")]
+    [Display(Name = "No Dithering (Quantize Only)")]
     QuantizeOnly,
 
     [Display(Name = "Burkes", GroupName = "Error Diffusion")]

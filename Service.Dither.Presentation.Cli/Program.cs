@@ -31,5 +31,5 @@ using var data = image.Encode(SKEncodedImageFormat.Png, 100);
 using var output = File.OpenWrite(@"dither.png");
 data.SaveTo(output);
 
-Console.WriteLine("Изображение успешно обработано и сохранено!\n" +
+Console.WriteLine("Image successfully processed and saved!\n" +
                   $"{processStopwatch.ElapsedMilliseconds}ms");

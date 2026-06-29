@@ -36,7 +36,7 @@ function wireResultImageClick() {
     img.addEventListener('click', function () {
       const a = document.createElement('a');
       a.href = this.src;
-      a.download = 'image.png';
+      a.download = this.dataset.filename || 'image.png';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -52,7 +52,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
   const originalText = submitBtn.textContent;
 
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Обработка...';
+  submitBtn.textContent = 'Processing...';
 
   try {
     const response = await fetch(form.action, {
@@ -61,7 +61,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     });
 
     if (!response.ok) {
-      showToast('Ошибка сервера: ' + response.status, 'error');
+      showToast('Server error: ' + response.status, 'error');
       return;
     }
 
@@ -79,12 +79,12 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     const errorMatch = html.match(/showToast\('([^']*)',\s*'error'\)/);
     if (errorMatch) {
       showToast(errorMatch[1], 'error');
-    } else if (html.includes('Изображение успешно обработано')) {
-      showToast('Изображение успешно обработано!', 'success');
+    } else if (doc.getElementById('resultImage')) {
+      showToast('Image successfully processed!', 'success');
       wireResultImageClick();
     }
   } catch (err) {
-    showToast('Ошибка сети: ' + err.message, 'error');
+    showToast('Network error: ' + err.message, 'error');
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = originalText;
