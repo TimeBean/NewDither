@@ -27,6 +27,7 @@ public class CommonDitherHandler : IRequestHandler<DitherCommand, SKData>
             QuantizationAlgorithm.Linear32 => new LinearQuantizer(32),
             QuantizationAlgorithm.Linear64 => new LinearQuantizer(64),
             QuantizationAlgorithm.GrayscaleByAverage => new GrayscaleByAverageQuantizer(),
+            QuantizationAlgorithm.GrayscaleByAverageLuminance => new GrayscaleByAverageLuminanceQuantizer(),
 
             _ => throw new ArgumentOutOfRangeException()
         };

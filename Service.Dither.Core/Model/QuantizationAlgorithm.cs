@@ -10,4 +10,5 @@ public enum QuantizationAlgorithm
     Linear64,
     
     GrayscaleByAverage,
+    GrayscaleByAverageLuminance
 }

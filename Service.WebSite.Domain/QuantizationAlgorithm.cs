@@ -15,4 +15,7 @@ public enum QuantizationAlgorithm
     
     [Display(Name = "Grayscale (Average)")]
     GrayscaleByAverage,
+    
+    [Display(Name = "Grayscale (Average Luminance)")]
+    GrayscaleByAverageLuminance,
 }
