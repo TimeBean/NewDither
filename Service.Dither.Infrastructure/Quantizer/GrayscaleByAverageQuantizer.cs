@@ -6,12 +6,12 @@ public class GrayscaleByAverageQuantizer : IQuantizer
 {
     public float[] Quantize(float[] pixels)
     {
-        var pixel = pixels.Average();
-        pixels[0] = pixel;
-        pixels[1] = pixel;
-        pixels[2] = pixel;
+        var pixel = (float)Math.Round(pixels.Average());
+        for (var i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = pixel;
+        }
         
         return pixels;
-        
     }
 }
