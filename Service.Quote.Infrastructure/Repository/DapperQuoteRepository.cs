@@ -32,7 +32,7 @@ public class DapperQuoteRepository : IQuoteRepository
                                
                                y.id AS Id,
                                y.years_from_median AS YearFromMedian,
-                               y.is_anno_domini AS IsAnnoDomini
+                               CAST(y.is_anno_domini AS int) AS Era
                            FROM Quote q
                            INNER JOIN Author a ON q.author_id = a.id
                            INNER JOIN Year y ON q.year_id = y.id
@@ -74,7 +74,7 @@ public class DapperQuoteRepository : IQuoteRepository
                            SELECT 
                                q.id AS Id, q.content AS Content,
                                a.id AS Id, a.first_name AS FirstName, a.second_name AS SecondName, a.middle_name AS MiddleName,
-                               y.id AS Id, y.years_from_median AS YearFromMedian, y.is_anno_domini AS IsAnnoDomini
+                               y.id AS Id, y.years_from_median AS YearFromMedian, CAST(y.is_anno_domini AS int) AS Era
                            FROM Quote q
                            INNER JOIN Author a ON q.author_id = a.id
                            INNER JOIN Year   y ON q.year_id = y.id

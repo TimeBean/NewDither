@@ -24,16 +24,16 @@ public class Year
     /// Note: According to the current <see cref="ToString"/> implementation, 
     /// <see langword="true"/> appends "BC" and <see langword="false"/> appends "AD".
     /// </remarks>
-    public bool IsAnnoDomini { get; }
+    public Era Era { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Year"/> class.
     /// </summary>
     /// <param name="id">The unique identifier of the year record.</param>
     /// <param name="yearFromMedian">The number of years relative to a designated median or baseline year.</param>
-    /// <param name="isAnnoDomini">Indicates whether the year is in the Anno Domini era.</param>
+    /// <param name="era">Indicates whether the year is in the Anno Domini era.</param>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="yearFromMedian"/> is zero.</exception>
-    public Year(int id, int yearFromMedian, bool isAnnoDomini)
+    public Year(int id, int yearFromMedian, Era era)
     {
         if (yearFromMedian == 0)
         {
@@ -42,7 +42,7 @@ public class Year
 
         Id = id;
         YearFromMedian = yearFromMedian;
-        IsAnnoDomini = isAnnoDomini;
+        Era = era;
     }
 
     /// <summary>
@@ -51,9 +51,7 @@ public class Year
     /// <returns>A string combining the offset value and the era indicator ("BC" or "AD").</returns>
     public override string ToString()
     {
-        var output = YearFromMedian.ToString();
-        if (IsAnnoDomini) output += " BC";
-        else output += " AD";
-        return output;
+        var eraSuffix = Era == Era.BeforeChrist ? "BC" : "AD";
+        return $"{YearFromMedian} {eraSuffix}";
     }
 }
