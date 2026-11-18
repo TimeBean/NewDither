@@ -29,7 +29,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/dither/debug", (DitherAlgorithm ditherAlgorithm, QuantizationAlgorithm quantizationAlgorithm) =>
-    Results.Ok(new { ditherAlgorithm = ditherAlgorithm.ToString(), ditherAlgorithmInt = (int)ditherAlgorithm, quantizationAlgorithm = quantizationAlgorithm.ToString(), quantizationAlgorithmInt = (int)quantizationAlgorithm }));
+    Results.Ok(new
+    {
+        ditherAlgorithm = ditherAlgorithm.ToString(),
+        ditherAlgorithmInt = (int)ditherAlgorithm,
+        quantizationAlgorithm = quantizationAlgorithm.ToString(),
+        quantizationAlgorithmInt = (int)quantizationAlgorithm
+    }));
 
 app.MapPost("/dither", async (IMediator mediator,
         IFormFile file, DitherAlgorithm ditherAlgorithm, QuantizationAlgorithm quantizationAlgorithm,
